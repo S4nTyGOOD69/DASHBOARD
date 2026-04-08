@@ -1,0 +1,292 @@
+
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.task-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    width: 360px;
+    background: rgba(255, 252, 252, 0.04);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    align-items: center;
+}
+
+.task-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+}
+
+/* Lista de tareas (id/class en HTML: tasklist / task-list) */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 360px;
+}
+
+.task-item {
+    background: rgba(240, 234, 234, 0.06);
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(253, 252, 252, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Diferenciar visualmente las tareas completadas */
+.task-item.completed {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), rgba(237, 243, 242, 0.1));
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12) inset;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+body {
+    background: linear-gradient(135deg, #ee2288, #2154fd, #9b1bd6);
+    font-family: Georgia, sans-serif;
+    line-height: 1.6;
+    color: #f3f3f3;
+}
+
+
+.input, input[type="text"], textarea, select  {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    color: #f01818;
+}
+
+/* Estilos específicos para la barra de agregar */
+.task-form input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.02);
+    color: #fff;
+    outline: none;
+}
+
+.task-form button {
+    background: linear-gradient(90deg,#9bc7c4,#ffffff);
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.task-form button:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    transition: all .12s ease;
+}
+
+.task-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-date {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-left: 6px;
+    color: rgba(255,255,255,0.9);
+}
+
+.delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #ffffff;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+/* Make emoji/icon buttons a little bigger and centered */
+.delete-btn {
+    font-size: 1.1em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-left .delete-btn {
+    margin-left: 6px;
+    color: #ffffff;
+}
+
+/* Botón borrar deshabilitado */
+.delete-btn:disabled,
+.delete-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    filter: grayscale(30%);
+}
+
+.completed span {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.task-stats {
+    display: flex;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 14px 16px; /* un poco más de padding para ajustarse al tamaño mayor */
+    border-radius: 12px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.task-stats p {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem; /* aumentar tamaño del texto del contador */
+}
+
+.task-stats span {
+    background: rgba(0,0,0,0.28);
+    padding: 6px 12px; /* aumentar padding para mejor legibilidad */
+    border-radius: 999px;
+    color: #fff;
+    font-weight: 800;
+    min-width: 44px; /* mayor anchura mínima */
+    text-align: center;
+    font-size: 1.05rem; /* tamaño del número */
+}
+
+/* Progress bar under the stats */
+.task-progress {
+    /* Force the progress bar to its own row inside the flex .task-stats */
+    flex-basis: 100%;
+    width: 100%;
+    height: 18px; /* a bit taller so it's more visible */
+    background: rgba(255,255,255,0.06);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+    position: relative; /* for overlay label */
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.task-progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width 350ms ease-in-out, background 250ms ease;
+    /* base gradient + animated stripes layer */
+    background-image: linear-gradient(90deg,#ecf1f1,#fdfdfd), repeating-linear-gradient(45deg, rgba(255,255,255,0.10) 0, rgba(255,255,255,0.10) 8px, transparent 8px, transparent 16px);
+    background-size: 100% 100%, 20px 20px;
+    background-position: 0 0, 0 0;
+    background-repeat: no-repeat, repeat;
+    animation: progress-stripes 1.2s linear infinite;
+}
+
+.task-progress-fill[aria-valuenow="0"] {
+    background: rgba(255,255,255,0.06);
+}
+
+/* If empty, stop stripe animation and use muted background */
+.task-progress-fill.empty {
+    background-image: none;
+    background-color: rgba(255,255,255,0.06);
+    animation: none;
+}
+
+@keyframes progress-stripes {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 0 0, 40px 0; }
+}
+
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #ffffff;
+    pointer-events: none;
+}
+
+/* Percent specific styling (slightly smaller badge) */
+.task-stats #completedPercent {
+    min-width: 48px;
+    background: rgba(255,255,255,0.10);
+    color: #ffffff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+.task-sort {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Botones de ordenar: mismo estilo que el botón de agregar */
+.task-sort button {
+    background: linear-gradient(90deg,#cfbb04,#d17f04);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.task-sort button:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+    transition: all .12s ease;
+}
+
+.task-sort button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Filtro: estilo activo */
+.filter-btn.active {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    background: linear-gradient(90deg,#f5b70b,#cf7207);
+    color: #fff;
+}
+
+.filter-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(231, 228, 228, 0.06);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}

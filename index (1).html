@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    
+    <header class="header">
+        <center><h1>Dashboard de tareas</h1></center>
+    </header>
+
+    <main class="container">
+        <section class="task-form">
+            <input id="taskinput" type="text" placeholder="Nueva tarea">
+            <button id="addtaskbtn">➕</button>
+        </section>
+
+        <section class="task-stats">
+            <p>Total: <span id="totaltaks">0</span></p>
+            <p>Completadas: <span id="completedtasks">0</span></p>
+            <p>Pendientes: <span id="pendingtasks">0</span></p>
+            <p>Porcentaje: <span id="completedPercent">0%</span></p>
+            <div class="task-progress" aria-hidden="false">
+                <div id="progressBar" class="task-progress-fill" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+                <span id="progressLabel" class="progress-label">0%</span>
+            </div>
+        </section>
+        <section class="task-sort">
+            <!-- Filtros -->
+            <button id="filterAll" class="filter-btn active">Todas</button>
+            <button id="filterPending" class="filter-btn">Pendientes</button>
+            <button id="filterCompleted" class="filter-btn">Completadas</button>
+
+            <!-- Orden -->
+            <button id="sortbtna">A→Z</button>
+            <button id="sortbtnz">Z→A</button>
+            <!-- Marcar todas completadas -->
+            <button id="completeAllBtn" title="Marcar todas como completadas">✔️ Todas</button>
+        </section>
+
+        <section id="tasklist" class="task-list">
+            <div class="task-item">
+                <div class="task-left">
+                    <input type="checkbox">
+                    <span>Estudiar JavaScript</span>
+                </div>
+                <span>Estudiar CSS</span>
+                <button id="deletebtn1" class="delete-btn">🗑️</button>
+                <input type="checkbox" id="checkbox1" class="checkbox1"></input>
+            </div>
+
+            <div class="task-item completed">
+                <span>Hacer ejercicio</span>
+                <button class="delete-btn">🗑️</button>
+                <input type="checkbox" id="checkbox1" class="checkbox1"></input>
+            </div>
+        </section>
+    </main>
+    <script src="js/script.js"></script>
+
+</body>
+</html>
