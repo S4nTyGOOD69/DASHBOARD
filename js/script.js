@@ -182,9 +182,23 @@ taskList.addEventListener('click', (e) => {
 		const label = task ? task.text : 'esta tarea';
 		if (!confirm(`¿Estás seguro que deseas eliminar "${label}"?`)) return;
 
-		tasks = tasks.filter(t => t.id !== id);
-		saveTasks();
-		renderTasks();
+		// Encontrar el elemento del DOM
+		const taskElement = del.closest('.task-item');
+		if (taskElement) {
+			// Agregar clase de animación de salida
+			taskElement.classList.add('removing');
+			// Esperar a que termine la animación antes de eliminar del DOM
+			taskElement.addEventListener('animationend', () => {
+				tasks = tasks.filter(t => t.id !== id);
+				saveTasks();
+				renderTasks();
+			}, { once: true });
+		} else {
+			// Si no se encuentra el elemento, eliminar directamente
+			tasks = tasks.filter(t => t.id !== id);
+			saveTasks();
+			renderTasks();
+		}
 		return;
 	}
 });
@@ -195,6 +209,17 @@ taskList.addEventListener('change', (e) => {
 		const id = cb.dataset.id;
 		const task = tasks.find(t => t.id === id);
 		if (task) {
+			// Encontrar el elemento del DOM
+			const taskElement = cb.closest('.task-item');
+			if (taskElement && task.completed !== cb.checked) {
+				// Agregar animación de transición
+				taskElement.classList.add('completing');
+				// Remover la clase después de que termine la animación
+				taskElement.addEventListener('animationend', () => {
+					taskElement.classList.remove('completing');
+				}, { once: true });
+			}
+			
 			// Cambiar estado y mover al fondo si se marca completada
 			task.completed = cb.checked;
 			// Mover en el array: si ahora completada -> enviar al final; si ahora pendiente -> mover al inicio
