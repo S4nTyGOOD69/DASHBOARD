@@ -17,11 +17,15 @@ function loadTasks() {
 	try {
 		const raw = localStorage.getItem(TASKS_KEY);
 		const arr = raw ? JSON.parse(raw) : [];
-		// Retro-fill createdAt for older entries that lack it
+		// Retro-fill createdAt and pinned for older entries that lack them
 		let mutated = false;
 		arr.forEach(t => {
 			if (!t.createdAt) {
 				t.createdAt = Date.now();
+				mutated = true;
+			}
+			if (t.pinned === undefined) {
+				t.pinned = false;
 				mutated = true;
 			}
 		});
@@ -57,9 +61,17 @@ function renderTasks() {
 		return;
 	}
 
+		// Ordenar tareas: fijadas primero, luego por fecha de creación (más recientes primero)
+		const sortedTasks = [...tasks].sort((a, b) => {
+			// Fijadas siempre primero
+			if (a.pinned && !b.pinned) return -1;
+			if (!a.pinned && b.pinned) return 1;
+			// Dentro de cada grupo, ordenar por fecha de creación (más recientes primero)
+			return b.createdAt - a.createdAt;
+		});
 
 		// Aplicar filtro antes de renderizar
-		const visible = tasks.filter(t => {
+		const visible = sortedTasks.filter(t => {
 			if (filterState === 'all') return true;
 			if (filterState === 'completed') return !!t.completed;
 			if (filterState === 'pending') return !t.completed;
@@ -68,7 +80,7 @@ function renderTasks() {
 
 		visible.forEach(task => {
 		const item = document.createElement('div');
-		item.className = 'task-item' + (task.completed ? ' completed' : '');
+		item.className = 'task-item' + (task.completed ? ' completed' : '') + (task.pinned ? ' pinned' : '');
 
 		const left = document.createElement('div');
 		left.className = 'task-left';
@@ -92,6 +104,14 @@ function renderTasks() {
 		left.appendChild(text);
 		left.appendChild(date);
 
+		// Botón de fijar
+		const pinBtn = document.createElement('button');
+		pinBtn.className = 'pin-btn';
+		pinBtn.textContent = task.pinned ? '📌' : '📍';
+		pinBtn.dataset.id = task.id;
+		pinBtn.setAttribute('aria-label', task.pinned ? 'Desfijar tarea' : 'Fijar tarea');
+		pinBtn.title = task.pinned ? 'Desfijar tarea' : 'Fijar tarea';
+
 		const del = document.createElement('button');
 			del.className = 'delete-btn';
 			del.textContent = '🗑️';
@@ -105,6 +125,7 @@ function renderTasks() {
 		if (!task.completed) del.classList.add('disabled');
 
 		left.insertBefore(del, text);
+		left.insertBefore(pinBtn, del);
 
 		item.appendChild(left);
 
@@ -157,6 +178,7 @@ function addTask() {
 		id: Date.now().toString(),
 		text,
 		completed: false,
+		pinned: false,
 		createdAt: Date.now(),
 	};
 
@@ -167,9 +189,11 @@ function addTask() {
 	taskInput.focus();
 }
 
-// Delegación para borrar y cambiar estado
+// Delegación para borrar, fijar y cambiar estado
 taskList.addEventListener('click', (e) => {
 	const del = e.target.closest('.delete-btn');
+	const pin = e.target.closest('.pin-btn');
+	
 	if (del) {
 		// Si el botón está deshabilitado, prevenir acción y notificar
 		if (del.disabled) {
@@ -185,6 +209,18 @@ taskList.addEventListener('click', (e) => {
 		tasks = tasks.filter(t => t.id !== id);
 		saveTasks();
 		renderTasks();
+		return;
+	}
+	
+	if (pin) {
+		const id = pin.dataset.id;
+		const task = tasks.find(t => t.id === id);
+		if (task) {
+			// Cambiar estado de fijado
+			task.pinned = !task.pinned;
+			saveTasks();
+			renderTasks();
+		}
 		return;
 	}
 });
