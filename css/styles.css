@@ -290,3 +290,62 @@ body {
     cursor: pointer;
     font-weight: 600;
 }
+
+/* ========== ANIMACIONES DE TAREAS ========== */
+
+/* Animación de entrada para nuevas tareas */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animación de salida para borrar tareas */
+@keyframes slideOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+/* Animación de transición para marcar completada */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Aplicar animación de entrada por defecto a nuevas tareas */
+.task-item {
+    animation: slideInUp 0.35s ease-out;
+}
+
+/* Clase para animación de salida (eliminar) */
+.task-item.removing {
+    animation: slideOutDown 0.35s ease-in forwards;
+}
+
+/* Clase para animación al marcar completada */
+.task-item.completing {
+    animation: pulse 0.5s ease-out;
+}
+
+/* Transición suave al cambiar estado */
+.task-item {
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
