@@ -348,6 +348,7 @@ body {
 /* Transición suave al cambiar estado */
 .task-item {
     transition: background 0.3s ease, box-shadow 0.3s ease;
+<<<<<<< HEAD
 }
 
 /* ========== ESTILOS PARA TAREAS FIJADAS ========== */
@@ -388,4 +389,6 @@ body {
 .task-item.pinned .pin-btn {
     color: #ffed4e;
     text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
+=======
+>>>>>>> f97cd3df1acd005d1f7e209559b797d4313883bb
 }
